@@ -18,35 +18,32 @@ const allPhotos = [
 
 const SIMILAR_ADVERTISEMENT_COUNT = 10;
 const createAdvertisement = (index) => {
-   const locationLet = getAnyRandomNumber (35.65000, 35.70000, 5);
-   const locationLng = getAnyRandomNumber (139.70000, 139.80000, 5);
+  const locationLet = getAnyRandomNumber (35.65000, 35.70000, 5);
+  const locationLng = getAnyRandomNumber (139.70000, 139.80000, 5);
 
-   return {
-     author: {
-       avatar: `img/avatars/user${integers[index]}.png`,
-     },
-     offer: {
-       title: `Объявление ${integers[index]}`,
-       address: `${locationLet  }, ${  locationLng}`,
-       price: getRandomPositiveInteger (100, 1000),
-       type: getRandomElement(types),
-       rooms: getRandomPositiveInteger (0, 5),
-       guests: getRandomPositiveInteger (0, 10),
-       checkin:  getRandomElement(checkTimes),
-       checkout: getRandomElement(checkTimes),
-       features:  shuffle (getRandomLength (allFeatures)),
-       description: `Описание ${integers[index]}`,
-       photos:  shuffle (getRandomLength (allPhotos)),
-     },
-     location: {
-       lat: locationLet,
-       lng: locationLng,
-     },
-   };
+  return {
+    author: {
+      avatar: `img/avatars/user${integers[index]}.png`,
+    },
+    offer: {
+      title: `Объявление ${integers[index]}`,
+      address: `${locationLet  }, ${  locationLng}`,
+      price: getRandomPositiveInteger (100, 1000),
+      type: getRandomElement(types),
+      rooms: getRandomPositiveInteger (0, 5),
+      guests: getRandomPositiveInteger (0, 10),
+      checkin:  getRandomElement(checkTimes),
+      checkout: getRandomElement(checkTimes),
+      features:  shuffle (getRandomLength (allFeatures)),
+      description: `Описание ${integers[index]}`,
+      photos:  shuffle (getRandomLength (allPhotos)),
+    },
+    location: {
+      lat: locationLet,
+      lng: locationLng,
+    },
+  };
  };
- const advertisements = Array.from({length: SIMILAR_ADVERTISEMENT_COUNT}, (item, i) => createAdvertisement(i));
-
- console.log('Модуль data создан');
- console.log(advertisements);
+const advertisements = Array.from({length: SIMILAR_ADVERTISEMENT_COUNT}, (item, i) => createAdvertisement(i));
 
 export {advertisements};

@@ -1,2 +1,1 @@
-import {advertisements} from './data.js'
-console.log(advertisements)
+import {advertisements} from './data.js';

@@ -31,6 +31,4 @@ const shuffle = (array) => {
   return array;
 };
 
-console.log('Модуль util создан');
-
 export {getRandomPositiveInteger, getAnyRandomNumber, getRandomLength, getRandomElement, shuffle};
