@@ -43,7 +43,7 @@ const createAdvertisement = (index) => {
       lng: locationLng,
     },
   };
- };
+};
 const advertisements = Array.from({length: SIMILAR_ADVERTISEMENT_COUNT}, (item, i) => createAdvertisement(i));
 
 export {advertisements};
