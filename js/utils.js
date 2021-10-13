@@ -1,3 +1,4 @@
+'use strict';
 const getRandomPositiveInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -14,12 +15,12 @@ const getAnyRandomNumber = (min, max, afterPoint) => {
 
 const getRandomLength = (array) => {
   const copyArray = array.slice();
-  copyArray.length = getRandomPositiveInteger (1, array.length-1);
+  copyArray.length = getRandomPositiveInteger(1, array.length-1);
   return copyArray;
 };
 
 const getRandomElement = (array) =>
-  array[getRandomPositiveInteger (0, array.length-1)];
+  array[getRandomPositiveInteger(0, array.length-1)];
 
 const shuffle = (array) => {
   for (let nbr = array.length - 1; nbr > 0; nbr--) {
