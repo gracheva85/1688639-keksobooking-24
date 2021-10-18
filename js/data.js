@@ -1,4 +1,3 @@
-'use strict';
 import {getRandomPositiveInteger, getAnyRandomNumber, getRandomLength, getRandomElement, shuffle} from './utils.js';
 
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
@@ -14,18 +13,18 @@ const createAdvertisement = (index) => {
   const locationLat = getAnyRandomNumber(35.65000, 35.70000, 5);
   const locationLng = getAnyRandomNumber(139.70000, 139.80000, 5);
   const checkTimes = getRandomElement(CHECK_TIMES);
-  const numberFromInd = (index < 8) ? '0' + (index + 1) : index + 1;
+  const numberFromInd = (index < 8) ? `0${(index + 1)}` : index + 1;
   return {
     author: {
       avatar: `img/avatars/user${numberFromInd}.png`,
     },
     offer: {
       title: 'Заголовок объявления о сдаче в аренду',
-      address: `${locationLat  }, ${  locationLng}`,
+      address: `${locationLat}, ${locationLng}`,
       price: getRandomPositiveInteger(0, 1000000),
       type: getRandomElement(TYPES),
-      rooms: getRandomPositiveInteger(0, 3),
-      guests: getRandomPositiveInteger(0, 3),
+      rooms: getRandomPositiveInteger(1, 3),
+      guests: getRandomPositiveInteger(1, 3),
       checkin:  checkTimes,
       checkout: checkTimes,
       features:  shuffle(getRandomLength(ALL_FEATURES)),
