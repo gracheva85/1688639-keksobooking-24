@@ -94,8 +94,6 @@ const onPriceSelect = (item) => {item.addEventListener('change', () => {
 onAdformInput('#price', '#type', price, typeInput, onPriceSelect);
 
 const onTitleInput = () => {title.addEventListener('input', () => {
-  //const firstPhrase = `Заголовок должен состоять еще из ${changeTitleByNumber(30-title.value.length), ['символа', 'символов', 'символов']}`;
-  //console.log(firstPhrase);
   const deficit = 30-title.value.length;
   const proficit = title.value.length-100;
   if (title.value.length < 30) {
