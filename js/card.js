@@ -1,29 +1,23 @@
 import {advertisements} from './data.js';
+import {changeTitleByNumber} from './utils.js';
 
 const map = document.querySelector('.map__canvas');
 const contentTemplate = document.querySelector('#card').content;
 const cardTemplate = contentTemplate.querySelector('.popup');
 const cards = [];
 
-const translate = (type) => {
-  switch (type) {
-    case 'flat':
-      return 'Квартира';
-    case 'bungalow':
-      return 'Бунгало';
-    case 'house':
-      return 'Дом';
-    case 'palace':
-      return 'Дворец';
-    case 'hotel':
-      return 'Отель';
-  }
+const Translator = {
+  BUNGALOW: 'Бунгало',
+  FLAT: 'Квартира',
+  HOTEL: 'Отель',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
 };
-
+/*
 const changeTitleByNumber = (number, titles) => {
   const CASES = [2, 0, 1, 1, 1, 2];
   return titles[ (number%100>4 && number%100<20)? 2 : CASES[(number%10<5)?number%10:5] ];
-};
+};*/
 
 const hidden = (content, elementClassName) => {
   if (content === '') {
@@ -61,7 +55,7 @@ similarAdvertisements.forEach((advertisement) => {
   advertisementElement.querySelector('.popup__title').textContent = advertisement.offer.title;
   advertisementElement.querySelector('.popup__text--address').textContent = advertisement.offer.address;
   advertisementElement.querySelector('.popup__text--price').textContent = `${advertisement.offer.price} ₽/ночь`;
-  advertisementElement.querySelector('.popup__type').textContent = translate(advertisement.offer.type);
+  advertisementElement.querySelector('.popup__type').textContent = Translator[advertisement.offer.type.toUpperCase()];
   advertisementElement.querySelector('.popup__text--capacity').textContent = roomAndGuest;
   advertisementElement.querySelector('.popup__text--time').textContent = `Заезд после ${advertisement.offer.checkin}, выезд до ${advertisement.offer.checkout}`;
   advertisementElement.querySelector('.popup__description').textContent = advertisement.offer.description;
