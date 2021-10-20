@@ -14,7 +14,7 @@ const getAnyRandomNumber = (min, max, afterPoint) => {
 
 const getRandomLength = (array) => {
   const copyArray = array.slice();
-  copyArray.length = getRandomPositiveInteger(1, array.length-1);
+  copyArray.length = getRandomPositiveInteger(1, array.length);
   return copyArray;
 };
 

@@ -1,10 +1,9 @@
 import {advertisements} from './data.js';
-import {changeTitleByNumber} from './utils.js';
+import {changeTitleByNumber, getRandomElement} from './utils.js';
 
 const map = document.querySelector('.map__canvas');
 const contentTemplate = document.querySelector('#card').content;
 const cardTemplate = contentTemplate.querySelector('.popup');
-const cards = [];
 
 const Translator = {
   BUNGALOW: 'Бунгало',
@@ -20,10 +19,10 @@ const hidden = (content, elementClassName) => {
   }
 };
 
-const similarAdvertisements = advertisements();
-similarAdvertisements.forEach((advertisement) => {
-  const advertisementElement = cardTemplate.cloneNode(true);
+const advertisement = getRandomElement(advertisements());
 
+const completeAdvertisement = () =>  {
+  const advertisementElement = cardTemplate.cloneNode(true);
   const photoContainer = advertisementElement.querySelector('.popup__photos');
   const photoTemplate = photoContainer.querySelector('.popup__photo');
   photoContainer.innerHTML = '';
@@ -66,7 +65,7 @@ similarAdvertisements.forEach((advertisement) => {
   hidden(features, advertisementElement.querySelector('.popup__features'));
   hidden(photos, advertisementElement.querySelector('.popup__photos'));
 
-  cards.push(advertisementElement);
-});
+  return advertisementElement;
+};
 
-map.appendChild(cards[0]);
+map.appendChild(completeAdvertisement());
