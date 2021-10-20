@@ -5,14 +5,19 @@ const adForm = document.querySelector('.ad-form');
 const adFormChildrens = adForm.children;
 const filterForm = document.querySelector('.map__filters');
 const filterchildrens = filterForm.children;
-const roomInput = adForm.querySelector('#room_number');
-const guestInput = adForm.querySelector('#capacity');
+const room = adForm.querySelector('#room_number');
+const guest = adForm.querySelector('#capacity');
 const roomNumber = adForm.querySelector('select[name=rooms]');
 const guestNumber = adForm.querySelector('select[name=capacity]');
 const typeSelect = adForm.querySelector('select[name=type]');
-const typeInput = adForm.querySelector('#type');
+const type = adForm.querySelector('#type');
 const price = adForm.querySelector('#price');
 const title = adForm.querySelector('#title');
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+const timeInSelected = adForm.querySelector('select[name="timein"]');
+const timeOutSelected = adForm.querySelector('select[name="timeout"]');
+
 
 const MinPriceByType = {
   BUNGALOW: 0,
@@ -47,20 +52,18 @@ const onAdformInput = (idFirst, idSecond, constFirst, constSecond, onAction) => 
   adForm.addEventListener('input', onRoomAndGuestSelect);
 };
 
-const onRoomSelect = (item) => {item.addEventListener('change', () => {
+const onRoomOrGuestChange = (item) => {item.addEventListener('change', () => {
   const roomValue = Number(roomNumber.value);
   const guestValue = Number(guestNumber.value);
+  guestNumber.style = 'box-shadow: 0 0 3px 3px red';
   if (roomValue < guestValue) {
     guestNumber.setCustomValidity('Количество комнат должно быть не менее количества гостей');
-    guestNumber.style = 'box-shadow: 0 0 3px 3px red';
   }
   else if (roomValue === 100 && guestValue !== 0) {
     guestNumber.setCustomValidity('Для 100 комнат доступен вариант "не для гостей"');
-    guestNumber.style = 'box-shadow: 0 0 3px 3px red';
   }
   else if (roomValue !== 100 && guestValue === 0) {
     guestNumber.setCustomValidity('Укажите количество гостей');
-    guestNumber.style = 'box-shadow: 0 0 3px 3px red';
   }
   else {guestNumber.setCustomValidity('');
     guestNumber.style = '';
@@ -69,20 +72,20 @@ const onRoomSelect = (item) => {item.addEventListener('change', () => {
 });
 };
 
-onAdformInput('#room_number', '#capacity', roomInput, guestInput, onRoomSelect);
+onAdformInput('#room_number', '#capacity', room, guest, onRoomOrGuestChange);
 
-const onPriceSelect = (item) => {item.addEventListener('change', () => {
+const onPriceOrTypeChange = (item) => {item.addEventListener('change', () => {
   price.min = MinPriceByType[typeSelect.value.toUpperCase()];
+  price.placeholder = price.min;
   const priceValue = Number(price.value);
   const priceMin = Number(price.min);
   const priceMax = Number(price.max);
+  price.style = 'box-shadow: 0 0 3px 3px red';
   if (priceValue < priceMin) {
-    price.setCustomValidity(`Цена должна быть больше ${priceMin}`);
-    price.style = 'box-shadow: 0 0 3px 3px red';
+    price.setCustomValidity(`Цена должна быть не менее ${priceMin}`);
   }
   else if (priceValue > priceMax) {
-    price.setCustomValidity(`Цена должна быть меньше ${priceMax}`);
-    price.style = 'box-shadow: 0 0 3px 3px red';
+    price.setCustomValidity(`Цена должна быть не более ${priceMax}`);
   }
   else {price.setCustomValidity('');
     price.style = '';
@@ -91,18 +94,17 @@ const onPriceSelect = (item) => {item.addEventListener('change', () => {
 });
 };
 
-onAdformInput('#price', '#type', price, typeInput, onPriceSelect);
+onAdformInput('#price', '#type', price, type, onPriceOrTypeChange);
 
 const onTitleInput = () => {title.addEventListener('input', () => {
   const deficit = 30-title.value.length;
   const proficit = title.value.length-100;
+  title.style = 'box-shadow: 0 0 3px 3px red';
   if (title.value.length < 30) {
     title.setCustomValidity(`Заголовок должен состоять еще из ${deficit} ${changeTitleByNumber(deficit, ['символа', 'символов', 'символов'])}`);
-    title.style = 'box-shadow: 0 0 3px 3px red';
   }
   else if (title.value.length > 100) {
     title.setCustomValidity(`Заголовок должен быть меньше на ${proficit} ${changeTitleByNumber(proficit, ['символ', 'символа', 'символов'])}`);
-    title.style = 'box-shadow: 0 0 3px 3px red';
   }
   else {title.setCustomValidity('');
     title.style = '';
@@ -112,3 +114,12 @@ const onTitleInput = () => {title.addEventListener('input', () => {
 };
 onTitleInput();
 
+const changeTime = (item) => {
+  if (item === timeIn) {
+    timeOutSelected.value = timeInSelected.value;
+  } else if (item === timeOut) {
+    timeInSelected.value = timeOutSelected.value;
+  }
+};
+
+onAdformInput('#timein', '#timeout', timeIn, timeOut, changeTime);
