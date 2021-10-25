@@ -1,15 +1,13 @@
-
-import {toggleFormClass} from './form.js';
+import {changeFromStateEnabled, adFormChildrens, filterChildrens} from './form.js';
 import {createAdvertisements} from './data.js';
 import {completeAdvertisement} from './card.js';
 
 const adressInput = document.querySelector('#address');
 
-toggleFormClass();
-
 const map = L.map('map-canvas')
   .on('load', () => {
-    toggleFormClass();
+    changeFromStateEnabled(false, adFormChildrens);
+    changeFromStateEnabled(false, filterChildrens);
   })
   .setView({
     lat: 35.68172,
