@@ -1,7 +1,5 @@
-import {advertisements} from './data.js';
-import {changeTitleByNumber, getRandomElement} from './utils.js';
+import {changeTitleByNumber} from './utils.js';
 
-const map = document.querySelector('.map__canvas');
 const contentTemplate = document.querySelector('#card').content;
 const cardTemplate = contentTemplate.querySelector('.popup');
 
@@ -19,14 +17,12 @@ const hidden = (content, elementClassName) => {
   }
 };
 
-const advertisement = getRandomElement(advertisements());
-
-const completeAdvertisement = () =>  {
+const completeAdvertisement = (createAdvertisement) =>  {
   const advertisementElement = cardTemplate.cloneNode(true);
   const photoContainer = advertisementElement.querySelector('.popup__photos');
   const photoTemplate = photoContainer.querySelector('.popup__photo');
   photoContainer.innerHTML = '';
-  const photos = advertisement.offer.photos;
+  const photos = createAdvertisement.offer.photos;
   photos.forEach((photo) => {
     const clonePhoto = photoTemplate.cloneNode(true);
     clonePhoto.src = photo;
@@ -34,7 +30,7 @@ const completeAdvertisement = () =>  {
   });
 
   const featureList = advertisementElement.querySelectorAll('.popup__feature');
-  const features = advertisement.offer.features;
+  const features = createAdvertisement.offer.features;
   const modifiers = features.map((feature) => `popup__feature--${feature}`);
   featureList.forEach((featureListItem) => {
     const modifier = featureListItem.classList[1];
@@ -43,29 +39,29 @@ const completeAdvertisement = () =>  {
     }
   });
 
-  const roomAndGuest = `${advertisement.offer.rooms} ${changeTitleByNumber(advertisement.offer.rooms, ['комната', 'комнаты', 'комнат'])} для ${advertisement.offer.guests} ${changeTitleByNumber(advertisement.offer.guests, ['гостя', 'гостей', 'гостей'])}`;
+  const roomAndGuest = `${createAdvertisement.offer.rooms} ${changeTitleByNumber(createAdvertisement.offer.rooms, ['комната', 'комнаты', 'комнат'])} для ${createAdvertisement.offer.guests} ${changeTitleByNumber(createAdvertisement.offer.guests, ['гостя', 'гостей', 'гостей'])}`;
 
-  advertisementElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
-  advertisementElement.querySelector('.popup__title').textContent = advertisement.offer.title;
-  advertisementElement.querySelector('.popup__text--address').textContent = advertisement.offer.address;
-  advertisementElement.querySelector('.popup__text--price').textContent = `${advertisement.offer.price} ₽/ночь`;
-  advertisementElement.querySelector('.popup__type').textContent = Translator[advertisement.offer.type.toUpperCase()];
+  advertisementElement.querySelector('.popup__avatar').src = createAdvertisement.author.avatar;
+  advertisementElement.querySelector('.popup__title').textContent = createAdvertisement.offer.title;
+  advertisementElement.querySelector('.popup__text--address').textContent = createAdvertisement.offer.address;
+  advertisementElement.querySelector('.popup__text--price').textContent = `${createAdvertisement.offer.price} ₽/ночь`;
+  advertisementElement.querySelector('.popup__type').textContent = Translator[createAdvertisement.offer.type.toUpperCase()];
   advertisementElement.querySelector('.popup__text--capacity').textContent = roomAndGuest;
-  advertisementElement.querySelector('.popup__text--time').textContent = `Заезд после ${advertisement.offer.checkin}, выезд до ${advertisement.offer.checkout}`;
-  advertisementElement.querySelector('.popup__description').textContent = advertisement.offer.description;
+  advertisementElement.querySelector('.popup__text--time').textContent = `Заезд после ${createAdvertisement.offer.checkin}, выезд до ${createAdvertisement.offer.checkout}`;
+  advertisementElement.querySelector('.popup__description').textContent = createAdvertisement.offer.description;
 
-  hidden(advertisement.author.avatar,advertisementElement.querySelector('.popup__avatar'));
-  hidden(advertisement.offer.address, advertisementElement.querySelector('.popup__text--address'));
-  hidden(advertisement.offer.type, advertisementElement.querySelector('.popup__type'));
-  hidden(advertisement.offer.rooms, advertisementElement.querySelector('.popup__text--capacity'));
-  hidden(advertisement.offer.guests, advertisementElement.querySelector('.popup__text--capacity'));
-  hidden(advertisement.offer.checkin, advertisementElement.querySelector('.popup__text--time'));
-  hidden(advertisement.offer.checkout, advertisementElement.querySelector('.popup__text--time'));
-  hidden(advertisement.offer.description, advertisementElement.querySelector('.popup__description'));
+  hidden(createAdvertisement.author.avatar,advertisementElement.querySelector('.popup__avatar'));
+  hidden(createAdvertisement.offer.address, advertisementElement.querySelector('.popup__text--address'));
+  hidden(createAdvertisement.offer.type, advertisementElement.querySelector('.popup__type'));
+  hidden(createAdvertisement.offer.rooms, advertisementElement.querySelector('.popup__text--capacity'));
+  hidden(createAdvertisement.offer.guests, advertisementElement.querySelector('.popup__text--capacity'));
+  hidden(createAdvertisement.offer.checkin, advertisementElement.querySelector('.popup__text--time'));
+  hidden(createAdvertisement.offer.checkout, advertisementElement.querySelector('.popup__text--time'));
+  hidden(createAdvertisement.offer.description, advertisementElement.querySelector('.popup__description'));
   hidden(features, advertisementElement.querySelector('.popup__features'));
   hidden(photos, advertisementElement.querySelector('.popup__photos'));
 
   return advertisementElement;
 };
 
-map.appendChild(completeAdvertisement());
+export {completeAdvertisement};
