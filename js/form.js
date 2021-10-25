@@ -25,27 +25,29 @@ const MinPriceByType = {
   PALACE: 10000,
 };
 
-const toggleFormClass = () => {
-  filterForm.classList.toggle('map__filters--disabled');
-  Array.from(filterChildrens).forEach((filterChildren) => {
-    if (filterForm.classList.contains('map__filters--disabled')) {
-      filterChildren.disabled = true;}
-    filterChildren.disabled = false;
+const changeFromStateEnabled = (disable, formChildrens) => {
+  Array.from(formChildrens).forEach((formChildren) => {
+    formChildren.disabled = disable;
   });
-  adForm.classList.toggle('ad-form--disabled');
-  Array.from(adFormChildrens).forEach((adFormChildren) => {
-    if (adForm.classList.contains('ad-form--disabled')) {
-      adFormChildren.disabled = true;}
-    adFormChildren.disabled = false;
-  });
+  if (disable === true) {
+    filterForm.classList.add('map__filters--disabled');
+    adForm.classList.add('ad-form--disabled');
+  }
+  filterForm.classList.remove('map__filters--disabled');
+  adForm.classList.remove('ad-form--disabled');
 };
 
-const onAdformInput = (idFirst, idSecond, constFirst, constSecond, callFunction) => {
+changeFromStateEnabled(true, adFormChildrens);
+changeFromStateEnabled(true, filterChildrens);
+
+const onAdformInput = (idFirst, idSecond, constFirst, constSecond, cb) => {
   const switchFunctionArgument = (evt) => {
     if (evt.target.matches(idFirst)) {
-      callFunction(constFirst);}
+      cb(constFirst);
+    }
     else if (evt.target.matches(idSecond)) {
-      callFunction(constSecond);}
+      cb(constSecond);
+    }
   };
   adForm.addEventListener('input', switchFunctionArgument);
 };
@@ -114,9 +116,12 @@ const onTitleInput = () => {title.addEventListener('input', () => {
 onTitleInput();
 
 const changeTime = (item) => {
-  item === timeIn ? timeOutSelected.value = timeInSelected.value : timeInSelected.value = timeOutSelected.value;
+  if (item === timeIn) {
+    timeOutSelected.value = timeInSelected.value;
+  }
+  timeInSelected.value = timeOutSelected.value;
 };
 
 onAdformInput('#timein', '#timeout', timeIn, timeOut, changeTime);
 
-export {toggleFormClass};
+export {changeFromStateEnabled, adFormChildrens, filterChildrens};
