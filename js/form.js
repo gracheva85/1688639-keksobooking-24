@@ -1,10 +1,9 @@
 import {changeTitleByNumber} from './utils.js';
 
-
 const adForm = document.querySelector('.ad-form');
 const adFormChildrens = adForm.children;
 const filterForm = document.querySelector('.map__filters');
-const filterchildrens = filterForm.children;
+const filterChildrens = filterForm.children;
 const room = adForm.querySelector('#room_number');
 const guest = adForm.querySelector('#capacity');
 const roomNumber = adForm.querySelector('select[name=rooms]');
@@ -18,7 +17,6 @@ const timeOut = adForm.querySelector('#timeout');
 const timeInSelected = adForm.querySelector('select[name="timein"]');
 const timeOutSelected = adForm.querySelector('select[name="timeout"]');
 
-
 const MinPriceByType = {
   BUNGALOW: 0,
   FLAT: 1000,
@@ -27,29 +25,29 @@ const MinPriceByType = {
   PALACE: 10000,
 };
 
-const toggleFormClass = (form, formChildrens) => {
-  form.classList.toggle('ad-form--disabled');
-  Array.from(formChildrens).forEach((formChildren) => {
-    if ( form.classList.contains('ad-form--disabled')) {
-      formChildren.disabled = true;
-    } else {formChildren.disabled = false;
-    }
+const toggleFormClass = () => {
+  filterForm.classList.toggle('map__filters--disabled');
+  Array.from(filterChildrens).forEach((filterChildren) => {
+    if (filterForm.classList.contains('map__filters--disabled')) {
+      filterChildren.disabled = true;}
+    filterChildren.disabled = false;
+  });
+  adForm.classList.toggle('ad-form--disabled');
+  Array.from(adFormChildrens).forEach((adFormChildren) => {
+    if (adForm.classList.contains('ad-form--disabled')) {
+      adFormChildren.disabled = true;}
+    adFormChildren.disabled = false;
   });
 };
 
-toggleFormClass(adForm, adFormChildrens);
-toggleFormClass(filterForm, filterchildrens);
-toggleFormClass(adForm, adFormChildrens);
-toggleFormClass(filterForm, filterchildrens);
-
-const onAdformInput = (idFirst, idSecond, constFirst, constSecond, onAction) => {
-  const onRoomAndGuestSelect = (evt) => {
+const onAdformInput = (idFirst, idSecond, constFirst, constSecond, callFunction) => {
+  const switchFunctionArgument = (evt) => {
     if (evt.target.matches(idFirst)) {
-      onAction(constFirst);}
+      callFunction(constFirst);}
     else if (evt.target.matches(idSecond)) {
-      onAction(constSecond);}
+      callFunction(constSecond);}
   };
-  adForm.addEventListener('input', onRoomAndGuestSelect);
+  adForm.addEventListener('input', switchFunctionArgument);
 };
 
 const onRoomOrGuestChange = (item) => {item.addEventListener('change', () => {
@@ -112,14 +110,13 @@ const onTitleInput = () => {title.addEventListener('input', () => {
   title.reportValidity();
 });
 };
+
 onTitleInput();
 
 const changeTime = (item) => {
-  if (item === timeIn) {
-    timeOutSelected.value = timeInSelected.value;
-  } else if (item === timeOut) {
-    timeInSelected.value = timeOutSelected.value;
-  }
+  item === timeIn ? timeOutSelected.value = timeInSelected.value : timeInSelected.value = timeOutSelected.value;
 };
 
 onAdformInput('#timein', '#timeout', timeIn, timeOut, changeTime);
+
+export {toggleFormClass};

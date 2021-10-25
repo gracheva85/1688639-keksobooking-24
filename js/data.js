@@ -13,7 +13,7 @@ const createAdvertisement = (index) => {
   const locationLat = getAnyRandomNumber(35.65000, 35.70000, 5);
   const locationLng = getAnyRandomNumber(139.70000, 139.80000, 5);
   const checkTimes = getRandomElement(CHECK_TIMES);
-  const numberFromInd = (index < 8) ? `0${(index + 1)}` : index + 1;
+  const numberFromInd = (index < 9) ? `0${(index + 1)}` : index + 1;
   return {
     author: {
       avatar: `img/avatars/user${numberFromInd}.png`,
@@ -37,5 +37,6 @@ const createAdvertisement = (index) => {
     },
   };
 };
-const advertisements = () => Array.from({length: SIMILAR_ADVERTISEMENT_COUNT}, (item, i) => createAdvertisement(i));
-export {advertisements};
+const createAdvertisements = () => Array.from({length: SIMILAR_ADVERTISEMENT_COUNT}, (item, i) => createAdvertisement(i));
+
+export {createAdvertisements};
