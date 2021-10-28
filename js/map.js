@@ -11,7 +11,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: 35.68172,
     lng: 139.75392,
-  }, 10);
+  }, 14);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -79,7 +79,6 @@ mainPinMarker.on('moveend', (evt) => {
   adressInput.value = `${coordinates[0].toFixed(5)}, ${coordinates[1].toFixed(5)}`;
 });
 
-
 const resetMapAndMarker = () => {
   mainPinMarker.setLatLng({
     lat: 35.68172,
@@ -88,7 +87,7 @@ const resetMapAndMarker = () => {
   map.setView({
     lat: 35.68172,
     lng: 139.75392,
-  }, 10);
+  }, 14);
   map.closePopup();
 };
 
