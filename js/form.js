@@ -1,4 +1,7 @@
 import {changeTitleByNumber} from './utils.js';
+import {createPopupMessage, error} from './popups.js';
+import {resetForm} from './main.js';
+import {sendData} from './api.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormChildrens = adForm.children;
@@ -16,6 +19,7 @@ const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
 const timeInSelected = adForm.querySelector('select[name="timein"]');
 const timeOutSelected = adForm.querySelector('select[name="timeout"]');
+const resetButton = adForm.querySelector('.ad-form__reset');
 
 const MinPriceByType = {
   BUNGALOW: 0,
@@ -29,16 +33,9 @@ const changeFromStateEnabled = (disable, formChildrens) => {
   Array.from(formChildrens).forEach((formChildren) => {
     formChildren.disabled = disable;
   });
-  if (disable === true) {
-    filterForm.classList.add('map__filters--disabled');
-    adForm.classList.add('ad-form--disabled');
-  }
-  filterForm.classList.remove('map__filters--disabled');
-  adForm.classList.remove('ad-form--disabled');
+  filterForm.classList[disable ? 'add' : 'remove']('map__filters--disabled');
+  adForm.classList[disable ? 'add' : 'remove']('ad-form--disabled');
 };
-
-changeFromStateEnabled(true, adFormChildrens);
-changeFromStateEnabled(true, filterChildrens);
 
 const onAdformInput = (idFirst, idSecond, constFirst, constSecond, cb) => {
   const switchFunctionArgument = (evt) => {
@@ -124,4 +121,28 @@ const changeTime = (item) => {
 
 onAdformInput('#timein', '#timeout', timeIn, timeOut, changeTime);
 
-export {changeFromStateEnabled, adFormChildrens, filterChildrens};
+const clearForm = () => {
+  adForm.reset();
+  filterForm.reset();
+  price.placeholder = '1000';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData(
+      () => onSuccess(),
+      () => createPopupMessage(error),
+      new FormData(evt.target),
+    );
+  });
+};
+
+const onResetClick = () => {
+  resetButton.addEventListener('click', () => {
+    resetForm();
+  });
+};
+onResetClick();
+
+export {changeFromStateEnabled, adFormChildrens, filterChildrens, setUserFormSubmit, clearForm};

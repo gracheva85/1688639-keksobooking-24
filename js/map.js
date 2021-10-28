@@ -1,14 +1,13 @@
 import {changeFromStateEnabled, adFormChildrens, filterChildrens} from './form.js';
-import {createAdvertisements} from './data.js';
 import {completeAdvertisement} from './card.js';
+import {getData} from './api.js';
 
 const adressInput = document.querySelector('#address');
 
+changeFromStateEnabled(true, adFormChildrens);
+changeFromStateEnabled(true, filterChildrens);
+
 const map = L.map('map-canvas')
-  .on('load', () => {
-    changeFromStateEnabled(false, adFormChildrens);
-    changeFromStateEnabled(false, filterChildrens);
-  })
   .setView({
     lat: 35.68172,
     lng: 139.75392,
@@ -20,6 +19,41 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
+
+const renderMarkers = (advertisements) => {
+  advertisements.forEach((advertisement) => {
+    const {lat, lng} = advertisement.location;
+    const icon = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+    const marker = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon: icon,
+      },
+    );
+
+    marker
+      .addTo(map)
+      .bindPopup(completeAdvertisement(advertisement));
+  });
+};
+
+const activateAfterMapLoad = () => {
+  changeFromStateEnabled(false, adFormChildrens);
+  changeFromStateEnabled(false, filterChildrens);
+  getData((data) => {
+    renderMarkers(data);
+  //Фильтры
+  });
+};
+
+map.on('load', activateAfterMapLoad());
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -45,26 +79,17 @@ mainPinMarker.on('moveend', (evt) => {
   adressInput.value = `${coordinates[0].toFixed(5)}, ${coordinates[1].toFixed(5)}`;
 });
 
-const advertisements = createAdvertisements();
 
-advertisements.forEach((advertisement) => {
-  const {lat, lng} = advertisement.location;
-  const icon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+const resetMapAndMarker = () => {
+  mainPinMarker.setLatLng({
+    lat: 35.68172,
+    lng: 139.75392,
   });
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon: icon,
-    },
-  );
+  map.setView({
+    lat: 35.68172,
+    lng: 139.75392,
+  }, 10);
+  map.closePopup();
+};
 
-  marker
-    .addTo(map)
-    .bindPopup(completeAdvertisement(advertisement));
-});
+export {resetMapAndMarker};
