@@ -21,23 +21,41 @@ const completeAdvertisement = (createAdvertisement) =>  {
   const advertisementElement = cardTemplate.cloneNode(true);
   const photoContainer = advertisementElement.querySelector('.popup__photos');
   const photoTemplate = photoContainer.querySelector('.popup__photo');
-  photoContainer.innerHTML = '';
-  const photos = createAdvertisement.offer.photos;
-  photos.forEach((photo) => {
-    const clonePhoto = photoTemplate.cloneNode(true);
-    clonePhoto.src = photo;
-    photoContainer.appendChild(clonePhoto);
-  });
-
   const featureList = advertisementElement.querySelectorAll('.popup__feature');
-  const features = createAdvertisement.offer.features;
-  const modifiers = features.map((feature) => `popup__feature--${feature}`);
-  featureList.forEach((featureListItem) => {
-    const modifier = featureListItem.classList[1];
-    if (!modifiers.includes(modifier)) {
-      featureListItem.remove();
+  const featureContainer = advertisementElement.querySelector('.popup__features');
+
+  const getPhotos = () => {
+    const photos = createAdvertisement.offer.photos;
+    if (!photos) {
+      return photoContainer.remove();
+    } else {
+      photoContainer.innerHTML = '';
+      photos.forEach((photo) => {
+        const clonePhoto = photoTemplate.cloneNode(true);
+        clonePhoto.src = photo;
+        photoContainer.appendChild(clonePhoto);
+      });
     }
-  });
+  };
+
+  getPhotos();
+
+  const getFeatures = () => {
+    const features = createAdvertisement.offer.features;
+    if (!features) {
+      return featureContainer.remove();
+    } else {
+      const modifiers = features.map((feature) => `popup__feature--${feature}`);
+      featureList.forEach((featureListItem) => {
+        const modifier = featureListItem.classList[1];
+        if (!modifiers.includes(modifier)) {
+          featureListItem.remove();
+        }
+      });
+    }
+  };
+
+  getFeatures();
 
   const roomAndGuest = `${createAdvertisement.offer.rooms} ${changeTitleByNumber(createAdvertisement.offer.rooms, ['комната', 'комнаты', 'комнат'])} для ${createAdvertisement.offer.guests} ${changeTitleByNumber(createAdvertisement.offer.guests, ['гостя', 'гостей', 'гостей'])}`;
 
@@ -58,8 +76,6 @@ const completeAdvertisement = (createAdvertisement) =>  {
   hidden(createAdvertisement.offer.checkin, advertisementElement.querySelector('.popup__text--time'));
   hidden(createAdvertisement.offer.checkout, advertisementElement.querySelector('.popup__text--time'));
   hidden(createAdvertisement.offer.description, advertisementElement.querySelector('.popup__description'));
-  hidden(features, advertisementElement.querySelector('.popup__features'));
-  hidden(photos, advertisementElement.querySelector('.popup__photos'));
 
   return advertisementElement;
 };
