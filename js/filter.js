@@ -57,7 +57,6 @@ const getFeaturesRank = (advertisement) => {
   selectedFeatures.forEach((feature) => {
     advertisement.offer.features.includes(feature.value) ? rank +=1 : rank;
   });
-  console.log(rank);
   return rank;
 };
 

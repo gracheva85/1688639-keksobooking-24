@@ -1,4 +1,4 @@
-import {changeTitleByNumber, debounce, throttle} from './utils.js';
+import {changeTitleByNumber, debounce} from './utils.js';
 import {createPopupMessage, success, error} from './popups.js';
 import {sendData} from './api.js';
 import {resetMapAndMarker} from './map.js';
