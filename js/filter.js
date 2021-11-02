@@ -1,7 +1,6 @@
 import {filterForm} from './form.js';
 
 const DEFAULT_VALUE = 'any';
-
 const PriceLevel = {
   LOW: {
     MAX: 10000,
