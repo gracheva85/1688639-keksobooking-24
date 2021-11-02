@@ -20,7 +20,7 @@ const createPopupMessage = (messageType) =>  {
   }, {once: true});
 };
 
-const createDownloadErrorMessage = () =>  {
+const createDownloadMessage = () =>  {
   const message = messageErrorTemplate.cloneNode(true);
   message.querySelector('.error__message').textContent = 'Что-то пошло не так';
   message.querySelector('.error__button').textContent = 'Перезагрузить страницу';
@@ -37,5 +37,5 @@ const createDownloadErrorMessage = () =>  {
   }, {once: true});
 };
 
-export {createPopupMessage, success, error, createDownloadErrorMessage};
+export {createPopupMessage, success, error, createDownloadMessage};
 
