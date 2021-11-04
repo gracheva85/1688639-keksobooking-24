@@ -1,6 +1,4 @@
-import {createPopupMessage, success, error, createDownloadErrorMessage} from './popups.js';
-
-const getData = (onSuccess, onError) => fetch('https://24.javascript.pages.academy/keksobooking/data')
+const getData = (url, onSuccess, onError) => fetch(url)
   .then((response) => {
     if (response.ok) {
       return response.json();
@@ -11,20 +9,20 @@ const getData = (onSuccess, onError) => fetch('https://24.javascript.pages.acade
     onSuccess(data);
   })
   .catch(() => {
-    onError(createDownloadErrorMessage());
+    onError();
   });
 
-const sendData = (onSuccess, onFail, body) => {
+const sendData = (url, onSuccess, onFail, body) => {
   fetch(
-    'https://24.javascript.pages.academy/keksobooking',
+    url,
     {
       method: 'POST',
       body,
     },
-  ).then((response) => response.ok ? onSuccess(createPopupMessage(success)) : onFail(createPopupMessage(error)),
+  ).then((response) => response.ok ? onSuccess() : onFail(),
   )
     .catch(() => {
-      onFail(createPopupMessage(error));
+      onFail();
     });
 };
 

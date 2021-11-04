@@ -1,8 +1,5 @@
 import {changeTitleByNumber} from './utils.js';
 
-const contentTemplate = document.querySelector('#card').content;
-const cardTemplate = contentTemplate.querySelector('.popup');
-
 const Translator = {
   BUNGALOW: 'Бунгало',
   FLAT: 'Квартира',
@@ -10,6 +7,9 @@ const Translator = {
   HOUSE: 'Дом',
   PALACE: 'Дворец',
 };
+
+const contentTemplate = document.querySelector('#card').content;
+const cardTemplate = contentTemplate.querySelector('.popup');
 
 const hidden = (content, elementClassName) => {
   if (content === '') {
