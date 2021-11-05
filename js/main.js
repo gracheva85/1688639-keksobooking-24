@@ -1,15 +1,28 @@
 import './form.js';
 import './map.js';
-import {resetMapAndMarker} from './map.js';
-import {setUserFormSubmit, clearForm} from './form.js';
+import {changeFromStateEnabled, adFormChildrens, filterForm, filterChildrens} from './form.js';
+import {getData} from './api.js';
+import {renderMarkers, map} from './map.js';
+import {createDownloadMessage} from './popups.js';
+import {onFilterClick} from './filter.js';
 
-const resetForm = () => {
-  resetMapAndMarker();
-  clearForm();
+const URL_GET_DATA = 'https://24.javascript.pages.academy/keksobooking/data';
+
+const activateAfterMapLoad = () => {
+  changeFromStateEnabled(false, adFormChildrens);
+  getData(
+    URL_GET_DATA,
+    (data) => {
+      renderMarkers(data),
+      changeFromStateEnabled(false, filterChildrens),
+      onFilterClick(() => renderMarkers(data));
+    },
+    () => createDownloadMessage(),
+  );
 };
 
-setUserFormSubmit(resetForm);
+map.on('load', activateAfterMapLoad());
 
-export {resetForm};
+filterForm.addEventListener('click', () => {
 
-
+});

@@ -1,7 +1,7 @@
-import {changeTitleByNumber} from './utils.js';
-import {createPopupMessage, error} from './popups.js';
-import {resetForm} from './main.js';
+import {changeTitleByNumber, debounce} from './utils.js';
+import {createPopupMessage, success, error} from './popups.js';
 import {sendData} from './api.js';
+import {resetMapAndMarker} from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormChildrens = adForm.children;
@@ -20,6 +20,11 @@ const timeOut = adForm.querySelector('#timeout');
 const timeInSelected = adForm.querySelector('select[name="timein"]');
 const timeOutSelected = adForm.querySelector('select[name="timeout"]');
 const resetButton = adForm.querySelector('.ad-form__reset');
+const TITLE_LENGTH_MIN = 30;
+const TITLE_LENGTH_MAX = 100;
+const NUMBER_ROOMS_MAX = 100;
+const NUMBER_GUEST_MIN = 0;
+const URL_SEND_DATA = 'https://24.javascript.pages.academy/keksobooking';
 
 const MinPriceByType = {
   BUNGALOW: 0,
@@ -36,6 +41,9 @@ const changeFromStateEnabled = (disable, formChildrens) => {
   filterForm.classList[disable ? 'add' : 'remove']('map__filters--disabled');
   adForm.classList[disable ? 'add' : 'remove']('ad-form--disabled');
 };
+
+changeFromStateEnabled(true, adFormChildrens);
+changeFromStateEnabled(true, filterChildrens);
 
 const onAdformInput = (idFirst, idSecond, constFirst, constSecond, cb) => {
   const switchFunctionArgument = (evt) => {
@@ -56,10 +64,10 @@ const onRoomOrGuestChange = (item) => {item.addEventListener('change', () => {
   if (roomValue < guestValue) {
     guestNumber.setCustomValidity('Количество комнат должно быть не менее количества гостей');
   }
-  else if (roomValue === 100 && guestValue !== 0) {
+  else if (roomValue === NUMBER_ROOMS_MAX && guestValue !== NUMBER_GUEST_MIN) {
     guestNumber.setCustomValidity('Для 100 комнат доступен вариант "не для гостей"');
   }
-  else if (roomValue !== 100 && guestValue === 0) {
+  else if (roomValue !== NUMBER_ROOMS_MAX && guestValue === NUMBER_GUEST_MIN) {
     guestNumber.setCustomValidity('Укажите количество гостей');
   }
   else {guestNumber.setCustomValidity('');
@@ -93,14 +101,14 @@ const onPriceOrTypeChange = (item) => {item.addEventListener('change', () => {
 
 onAdformInput('#price', '#type', price, type, onPriceOrTypeChange);
 
-const onTitleInput = () => {title.addEventListener('input', () => {
-  const deficit = 30-title.value.length;
-  const proficit = title.value.length-100;
+const onTitleInput = () => {title.addEventListener('keydown', () => {
+  const deficit = TITLE_LENGTH_MIN - title.value.length;
+  const proficit = title.value.length-TITLE_LENGTH_MAX;
   title.style = 'box-shadow: 0 0 3px 3px red';
-  if (title.value.length < 30) {
+  if (title.value.length < TITLE_LENGTH_MIN) {
     title.setCustomValidity(`Заголовок должен состоять еще из ${deficit} ${changeTitleByNumber(deficit, ['символа', 'символов', 'символов'])}`);
   }
-  else if (title.value.length > 100) {
+  else if (title.value.length > TITLE_LENGTH_MAX) {
     title.setCustomValidity(`Заголовок должен быть меньше на ${proficit} ${changeTitleByNumber(proficit, ['символ', 'символа', 'символов'])}`);
   }
   else {title.setCustomValidity('');
@@ -110,7 +118,7 @@ const onTitleInput = () => {title.addEventListener('input', () => {
 });
 };
 
-onTitleInput();
+debounce(onTitleInput());
 
 const changeTime = (item) => {
   if (item === timeIn) {
@@ -125,24 +133,28 @@ const clearForm = () => {
   adForm.reset();
   filterForm.reset();
   price.placeholder = '1000';
+  resetMapAndMarker();
 };
 
-const setUserFormSubmit = (onSuccess) => {
+const setUserFormSubmit = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     sendData(
-      () => onSuccess(),
+      URL_SEND_DATA,
+      () => {createPopupMessage(success), clearForm();},
       () => createPopupMessage(error),
       new FormData(evt.target),
     );
   });
 };
 
+setUserFormSubmit();
+
 const onResetClick = () => {
   resetButton.addEventListener('click', () => {
-    resetForm();
+    clearForm();
   });
 };
 onResetClick();
 
-export {changeFromStateEnabled, adFormChildrens, filterChildrens, setUserFormSubmit, clearForm};
+export {changeFromStateEnabled, adFormChildrens, filterChildrens, filterForm};
