@@ -158,6 +158,7 @@ const onResetClick = () => {
     clearForm();
   });
 };
+
 onResetClick();
 
 export {changeFromStateEnabled, adFormChildrens, filterChildrens, filterForm};

@@ -101,4 +101,3 @@ const onMapLoad = (cb) => {
 };
 
 export {resetMapAndMarker, renderMarkers, onMapLoad};
-

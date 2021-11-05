@@ -87,3 +87,4 @@ const onFilterReset = (cb) => filterForm.addEventListener('reset', () => {
 });
 
 export {filterAndRender, onFilterChange, onFilterReset};
+
