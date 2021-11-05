@@ -131,6 +131,7 @@ const changeTime = (item) => {
 
 onAdformInput('#timein', '#timeout', timeIn, timeOut, changeTime);
 
+//Добавила ресет фото
 const clearForm = () => {
   adForm.reset();
   filterForm.reset();
@@ -145,7 +146,7 @@ const setUserFormSubmit = () => {
     sendData(
       URL_SEND_DATA,
       () => {createPopupMessage(success), clearForm();},
-      () => {createPopupMessage(error);},
+      () => createPopupMessage(error),
       new FormData(evt.target),
     );
   });
@@ -158,6 +159,7 @@ const onResetClick = () => {
     clearForm();
   });
 };
+
 onResetClick();
 
 export {changeFromStateEnabled, adFormChildrens, filterChildrens, filterForm};

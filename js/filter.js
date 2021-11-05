@@ -43,6 +43,7 @@ const filterGuests = (advertisement) => {
   return guestsValue === advertisement.offer.guests.toString() || guestsValue === DEFAULT_VALUE;
 };
 
+//Дописала работающий фильтр по чек-боксам:
 const filterFeatures = (advertisement) => {
   const selectedFeatures = Array.from(filterForm.querySelectorAll('#housing-features input:checked'));
   if (!advertisement.offer.features) {
@@ -53,6 +54,7 @@ const filterFeatures = (advertisement) => {
   return featuresValues.length === filter.length;
 };
 
+//Поправила логику. Сначала фильтрация до нужного количества. Далее - рендер точек:
 const filterAndRender = (advertisements) => {
   const getAllFilterInput = (advertisement) => {
     const inputFiltres = [
@@ -82,8 +84,10 @@ const onFilterChange = (cb) => filterForm.addEventListener('change', () => {
   cb();
 });
 
+//Добавила генерацию точек при нажатии на ресет:
 const onFilterReset = (cb) => filterForm.addEventListener('reset', () => {
   cb();
 });
 
 export {filterAndRender, onFilterChange, onFilterReset};
+
