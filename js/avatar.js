@@ -1,4 +1,3 @@
-//Полностью новый файл по загрузке картинок:
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const BASE_IMG_CONTENT = '<img src="img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44">';
 

@@ -131,7 +131,6 @@ const changeTime = (item) => {
 
 onAdformInput('#timein', '#timeout', timeIn, timeOut, changeTime);
 
-//Добавила ресет фото
 const clearForm = () => {
   adForm.reset();
   filterForm.reset();

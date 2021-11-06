@@ -10,7 +10,6 @@ import {createDownloadMessage} from './popups.js';
 
 const URL_GET_DATA = 'https://24.javascript.pages.academy/keksobooking/data';
 
-//Добавила функцию onMapLoad, и рендер точек с дебоунсом по событьиям фильтр и ресет:
 onMapLoad(
   getData(
     URL_GET_DATA,

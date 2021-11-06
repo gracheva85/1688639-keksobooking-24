@@ -86,7 +86,6 @@ const resetMapAndMarker = () => {
   map.closePopup();
 };
 
-//Дописала функцию onMapLoad:
 const onMapLoad = (cb) => {
   map
     .on('load', () => {
