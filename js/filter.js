@@ -1,6 +1,9 @@
 import {filterForm} from './form.js';
+import {renderMarkers} from './map.js';
 
+const RENTS_MAX = 10;
 const DEFAULT_VALUE = 'any';
+
 const PriceLevel = {
   LOW: {
     MAX: 10000,
@@ -15,12 +18,12 @@ const PriceLevel = {
 };
 
 const filterType = (advertisement) => {
-  const typeValue = filterForm.querySelector('select[name=housing-type]').value;
+  const typeValue = filterForm.querySelector('#housing-type').value;
   return typeValue === advertisement.offer.type || typeValue === DEFAULT_VALUE;
 };
 
 const filterPrice = (advertisement) => {
-  const priceValue = filterForm.querySelector('select[name=housing-price]').value;
+  const priceValue = filterForm.querySelector('#housing-price').value;
   switch (priceValue) {
     case 'low': return advertisement.offer.price < PriceLevel.LOW.MAX;
     case 'middle': return advertisement.offer.price >= PriceLevel.MIDDLE.MIN && advertisement.offer.price < PriceLevel.MIDDLE.MAX;
@@ -31,43 +34,57 @@ const filterPrice = (advertisement) => {
 };
 
 const filterRooms = (advertisement) => {
-  const roomsValue = filterForm.querySelector('select[name=housing-rooms]').value;
+  const roomsValue = filterForm.querySelector('#housing-rooms').value;
   return roomsValue === advertisement.offer.rooms.toString() || roomsValue === DEFAULT_VALUE;
 };
 
 const filterGuests = (advertisement) => {
-  const guestsValue = filterForm.querySelector('select[name=housing-guests]').value;
+  const guestsValue = filterForm.querySelector('#housing-guests').value;
   return guestsValue === advertisement.offer.guests.toString() || guestsValue === DEFAULT_VALUE;
 };
 
-const getAllFilterInput = (advertisement) => {
-  const inputFiltres = [
-    filterType,
-    filterPrice,
-    filterRooms,
-    filterGuests,
-  ];
-  return inputFiltres.every((input) => input(advertisement));
+const filterFeatures = (advertisement) => {
+  const selectedFeatures = Array.from(filterForm.querySelectorAll('#housing-features input:checked'));
+  if (!advertisement.offer.features) {
+    return false;
+  }
+  const featuresValues = selectedFeatures.map((element) => element.value);
+  const filter = featuresValues.filter((item) => advertisement.offer.features.includes(item));
+  return featuresValues.length === filter.length;
 };
 
-const getFeaturesRank = (advertisement) => {
-  let rank = 0;
-  const selectedFeatures = Array.from(filterForm.querySelectorAll('input[name="features"]:checked'));
-  selectedFeatures.forEach((feature) => {
-    advertisement.offer.features.includes(feature.value) ? rank +=1 : rank;
-  });
-  return rank;
+const filterAndRender = (advertisements) => {
+  const getAllFilterInput = (advertisement) => {
+    const inputFiltres = [
+      filterType,
+      filterPrice,
+      filterRooms,
+      filterGuests,
+      filterFeatures,
+    ];
+    return inputFiltres.every((input) => input(advertisement));
+  };
+
+  const filteredRents = [];
+  for (const element of advertisements) {
+    if (getAllFilterInput(element)) {
+      filteredRents.push(element);
+    }
+    if (filteredRents.length >= RENTS_MAX) {
+      break;
+    }
+  }
+
+  renderMarkers(filteredRents);
 };
 
-const compareAdvertisement = (advertisementA, advertisementB) => {
-  const rankA = getFeaturesRank(advertisementA);
-  const rankB = getFeaturesRank(advertisementB);
-
-  return rankB - rankA;
-};
-
-const onFilterClick = (cb) => filterForm.addEventListener('click', () => {
+const onFilterChange = (cb) => filterForm.addEventListener('change', () => {
   cb();
 });
 
-export {getAllFilterInput, compareAdvertisement, onFilterClick};
+const onFilterReset = (cb) => filterForm.addEventListener('reset', () => {
+  cb();
+});
+
+export {filterAndRender, onFilterChange, onFilterReset};
+

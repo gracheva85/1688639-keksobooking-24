@@ -1,7 +1,23 @@
-import {changeTitleByNumber, debounce} from './utils.js';
+import {changeTitleByNumber} from './utils.js';
 import {createPopupMessage, success, error} from './popups.js';
 import {sendData} from './api.js';
 import {resetMapAndMarker} from './map.js';
+import {resetImages} from './avatar.js';
+
+const TITLE_LENGTH_MIN = 30;
+const TITLE_LENGTH_MAX = 100;
+const NUMBER_ROOMS_MAX = 100;
+const NUMBER_GUEST_MIN = 0;
+const URL_SEND_DATA = 'https://24.javascript.pages.academy/keksobooking';
+const PRICE_PLACEHOLDER = '1000';
+
+const MinPriceByType = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
+};
 
 const adForm = document.querySelector('.ad-form');
 const adFormChildrens = adForm.children;
@@ -20,19 +36,6 @@ const timeOut = adForm.querySelector('#timeout');
 const timeInSelected = adForm.querySelector('select[name="timein"]');
 const timeOutSelected = adForm.querySelector('select[name="timeout"]');
 const resetButton = adForm.querySelector('.ad-form__reset');
-const TITLE_LENGTH_MIN = 30;
-const TITLE_LENGTH_MAX = 100;
-const NUMBER_ROOMS_MAX = 100;
-const NUMBER_GUEST_MIN = 0;
-const URL_SEND_DATA = 'https://24.javascript.pages.academy/keksobooking';
-
-const MinPriceByType = {
-  BUNGALOW: 0,
-  FLAT: 1000,
-  HOTEL: 3000,
-  HOUSE: 5000,
-  PALACE: 10000,
-};
 
 const changeFromStateEnabled = (disable, formChildrens) => {
   Array.from(formChildrens).forEach((formChildren) => {
@@ -41,7 +44,6 @@ const changeFromStateEnabled = (disable, formChildrens) => {
   filterForm.classList[disable ? 'add' : 'remove']('map__filters--disabled');
   adForm.classList[disable ? 'add' : 'remove']('ad-form--disabled');
 };
-
 changeFromStateEnabled(true, adFormChildrens);
 changeFromStateEnabled(true, filterChildrens);
 
@@ -118,7 +120,7 @@ const onTitleInput = () => {title.addEventListener('keydown', () => {
 });
 };
 
-debounce(onTitleInput());
+onTitleInput();
 
 const changeTime = (item) => {
   if (item === timeIn) {
@@ -132,8 +134,9 @@ onAdformInput('#timein', '#timeout', timeIn, timeOut, changeTime);
 const clearForm = () => {
   adForm.reset();
   filterForm.reset();
-  price.placeholder = '1000';
+  price.placeholder = PRICE_PLACEHOLDER;
   resetMapAndMarker();
+  resetImages();
 };
 
 const setUserFormSubmit = () => {
@@ -155,6 +158,7 @@ const onResetClick = () => {
     clearForm();
   });
 };
+
 onResetClick();
 
 export {changeFromStateEnabled, adFormChildrens, filterChildrens, filterForm};
