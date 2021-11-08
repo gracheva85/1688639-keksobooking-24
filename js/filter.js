@@ -48,8 +48,8 @@ const filterFeatures = (advertisement) => {
   if (!advertisement.offer.features) {
     return false;
   }
-  const featuresValues = [...selectedFeatures].map((el) => el.value);
-  const filter = featuresValues.filter((i) => advertisement.offer.features.includes(i));
+  const featuresValues = selectedFeatures.map((element) => element.value);
+  const filter = featuresValues.filter((item) => advertisement.offer.features.includes(item));
   return featuresValues.length === filter.length;
 };
 
