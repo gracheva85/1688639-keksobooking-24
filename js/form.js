@@ -145,11 +145,7 @@ const setUserFormSubmit = () => {
     sendData(
       URL_SEND_DATA,
       () => {createPopupMessage(success), clearForm();},
-<<<<<<< HEAD
-      () => {createPopupMessage(error);},
-=======
       () => createPopupMessage(error),
->>>>>>> 2d0c0288da6e0874af6a721db24410b4846667ce
       new FormData(evt.target),
     );
   });
