@@ -1,13 +1,20 @@
-const changeTitleByNumber = (number, titles) => {
-  const CASES = [2, 0, 1, 1, 1, 2];
-  return titles[ (number%100>4 && number%100<20)? 2 : CASES[(number%10<5)?number%10:5] ];
+const CASES = [2, 0, 1, 1, 1, 2];
+const DELAY = 500;
+
+const Value = {
+  TWO: 2,
+  FOUR: 4,
+  FIVE: 5,
+  TEN: 10,
+  TWENTY: 20,
+  HUNDRED: 100,
 };
+
+const changeTitleByNumber = (number, titles) => titles[(number%Value.HUNDRED>Value.FOUR && number%Value.HUNDRED<Value.TWENTY)? Value.TWO : CASES[(number%Value.TEN<Value.FIVE)?number%Value.TEN:Value.FIVE]];
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const isEnterKey = (evt) => evt.key === 'Enter';
-
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = DELAY) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
@@ -15,4 +22,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {changeTitleByNumber, isEscapeKey, isEnterKey, debounce};
+export {changeTitleByNumber, isEscapeKey, debounce};

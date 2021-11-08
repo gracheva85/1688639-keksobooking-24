@@ -4,10 +4,21 @@ import {changeFromStateEnabled, adFormChildrens} from './form.js';
 const MAP_SIZE = 13;
 const SRC_MAIN_PIN = 'img/main-pin.svg';
 const SRC_PIN = 'img/pin.svg';
+const NUMBERS_AFTER_POINT = 5;
 
-const TOKYO = {
-  lat: 35.68172,
-  lng: 139.75392,
+const Tokio = {
+  LAT: 35.68172,
+  LNG: 139.75392,
+};
+
+const MainMarkerDetails = {
+  SIZE: [52, 52],
+  ANCOR: [26, 52],
+};
+
+const IconDetails = {
+  SIZE: [40, 40],
+  ANCOR: [20, 40],
 };
 
 const adressInput = document.querySelector('#address');
@@ -23,14 +34,14 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
   iconUrl: SRC_MAIN_PIN,
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: MainMarkerDetails.SIZE,
+  iconAnchor: MainMarkerDetails.ANCOR,
 });
 
 const mainPinMarker = L.marker(
   {
-    lat: TOKYO.lat,
-    lng: TOKYO.lng,
+    lat: Tokio.LAT,
+    lng: Tokio.LNG,
   },
   {
     draggable: true,
@@ -42,7 +53,7 @@ mainPinMarker.addTo(map);
 
 mainPinMarker.on('moveend', (evt) => {
   const coordinates = Object.values(evt.target.getLatLng());
-  adressInput.value = `${coordinates[0].toFixed(5)}, ${coordinates[1].toFixed(5)}`;
+  adressInput.value = `${coordinates[0].toFixed(NUMBERS_AFTER_POINT)}, ${coordinates[1].toFixed(NUMBERS_AFTER_POINT)}`;
 });
 
 const markerGroup = L.layerGroup().addTo(map);
@@ -54,8 +65,8 @@ const renderMarkers = (advertisements) => {
       const {lat, lng} = advertisement.location;
       const icon = L.icon({
         iconUrl: SRC_PIN,
-        iconSize: [40, 40],
-        iconAnchor: [20, 40],
+        iconSize: IconDetails.SIZE,
+        iconAnchor: IconDetails.ANCOR,
       });
 
       const marker = L.marker(
@@ -75,12 +86,12 @@ const renderMarkers = (advertisements) => {
 
 const resetMapAndMarker = () => {
   mainPinMarker.setLatLng({
-    lat: TOKYO.lat,
-    lng: TOKYO.lng,
+    lat: Tokio.LAT,
+    lng: Tokio.LNG,
   });
   map.setView({
-    lat: TOKYO.lat,
-    lng: TOKYO.lng,
+    lat: Tokio.LAT,
+    lng: Tokio.LNG,
   }, MAP_SIZE,
   );
   map.closePopup();
@@ -93,8 +104,8 @@ const onMapLoad = (cb) => {
       cb;
     })
     .setView({
-      lat: TOKYO.lat,
-      lng: TOKYO.lng,
+      lat: Tokio.LAT,
+      lng: Tokio.LNG,
     }, MAP_SIZE,
     );
 

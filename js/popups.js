@@ -1,4 +1,4 @@
-import {isEscapeKey, isEnterKey} from './utils.js';
+import {isEscapeKey} from './utils.js';
 
 const body = document.querySelector('body');
 const contentPopupSuccess = document.querySelector('#success').content;
@@ -25,20 +25,26 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
-const createDownloadMessage = () =>  {
-  const message = messageErrorTemplate.cloneNode(true);
-  message.querySelector('.error__message').textContent = 'Что-то пошло не так';
-  message.querySelector('.error__button').textContent = 'Перезагрузить страницу';
-  body.appendChild(message);
-  message.querySelector('.error__button').addEventListener('click', ()=> {
+const createDownloadMessage = () => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 100;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = '20px';
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '28px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+  alertContainer.style.fontFamily = 'Roboto', 'Arial', 'sans-serif';
+
+  alertContainer.textContent = 'Не удалось загрузить данные. Попробуйте перезагрузить страницу';
+
+  document.body.append(alertContainer);
+
+  alertContainer.addEventListener('click', () => {
     location.reload();
     return false;
-  }, {once: true});
-  document.addEventListener('keydown', (evt) => {
-    if (isEnterKey(evt)) {
-      location.reload();
-      return false;
-    }
   }, {once: true});
 };
 
