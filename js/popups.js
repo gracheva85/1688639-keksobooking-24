@@ -13,12 +13,17 @@ const createPopupMessage = (messageType) =>  {
   messageType.addEventListener('click', () => {
     messageType.remove();
   }, {once: true});
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      messageType.remove();
-    }
-  }, {once: true});
 };
+
+document.addEventListener('keydown', (evt) => {
+  if (isEscapeKey(evt)) {
+    if (success) {
+      success.remove();
+    }
+    if (error) {
+      error.remove();}
+  }
+});
 
 const createDownloadMessage = () =>  {
   const message = messageErrorTemplate.cloneNode(true);
@@ -38,4 +43,3 @@ const createDownloadMessage = () =>  {
 };
 
 export {createPopupMessage, success, error, createDownloadMessage};
-
