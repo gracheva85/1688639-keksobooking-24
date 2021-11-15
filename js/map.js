@@ -54,6 +54,10 @@ mainPinMarker.addTo(map);
 mainPinMarker.on('moveend', (evt) => {
   const coordinates = Object.values(evt.target.getLatLng());
   adressInput.value = `${coordinates[0].toFixed(NUMBERS_AFTER_POINT)}, ${coordinates[1].toFixed(NUMBERS_AFTER_POINT)}`;
+  map.setView({
+    lat: `${coordinates[0].toFixed(NUMBERS_AFTER_POINT)}`,
+    lng: `${coordinates[1].toFixed(NUMBERS_AFTER_POINT)}`,
+  });
 });
 
 const markerGroup = L.layerGroup().addTo(map);
