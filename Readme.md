@@ -15,9 +15,11 @@
 2. Подключили и применили библиотеку Leaflet.
 3. Работа велась в редакторе VS-Code.
 
-Учебный проект с версткой и стилями был предоставлен HTML Academy.
-
 ### Код, написанный в процессе работы над провектом, расположен в папке "js".
+
+### На изучение материалов и написание проекта ушло 2 месяца.
+
+Учебный проект с версткой и стилями был предоставлен HTML Academy.
 
 <a href="https://htmlacademy.ru/intensive/javascript"><img align="left" width="50" height="50" alt="HTML Academy" src="https://up.htmlacademy.ru/static/img/intensive/javascript/logo-for-github-2.png"></a>
 
